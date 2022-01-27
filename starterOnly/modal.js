@@ -18,7 +18,10 @@ var inscription = document.querySelector("#inscription");
 
 
 // launch modal event
-modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
+window.addEventListener('load', function () {
+  modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
+})
+
 
 
 
@@ -31,12 +34,12 @@ function launchModal() {
 
 
 
-// (x)
-window.addEventListener("load", function(){
+// fonctionnement de la (x)
+
   closeBtn.addEventListener("click", function(){
     modalbg.style.display = "none"
   });
-});
+
   
 
 
@@ -64,18 +67,77 @@ form.quantity.addEventListener('change', function() {
 
 
 
+// validation de la totalité des champs 
 
  form.addEventListener('submit', function(e) {
   e.preventDefault();
   
-   if (validEmail(form.email) + (validBirthdate(form.birthdate) + (validQuantity(form.quantity) + (ValidCheckbox(form.checkbox1))))){
+   if ((validUser(inputFirst, 'prénom')) &&
+    (validUser(inputLast, 'nom')) && 
+    (validEmail(form.email)) && 
+    (validBirthdate(form.birthdate)) && 
+    (validQuantity(form.quantity)) &&
+    (validLocation(inputLocation)) && 
+    (ValidCheckbox(form.checkbox1))){
+
+   
         alert("document envoyé");
         form.submit();
-      
+   
     }    
   
   
- });
+   });
+
+
+// validation du prénom et du nom
+ 
+
+      
+const validUser = function(input , nom ){
+
+  let small = input.nextElementSibling;
+  if (!/[a-zA-Z]{3,15}/.test(input.value)){
+  small.innerHTML = 'le ' + nom + ' doit contenir plus de 2 caractères'
+  small.classList.remove('label-valide')
+  small.classList.add('label-invalide')
+  return false ;
+} else if 
+    (/[0-9]/.test(input.value)) {
+      small.innerHTML = 'le ' + nom + ' ne doit pas contenir de chiffre'
+      small.classList.remove('label-valide')
+      small.classList.add('label-invalide')
+      return false;
+  } else if 
+  (/[a-zA-Z]{3,15}/.test(input.value)) {
+     small.innerHTML = 'le ' + nom + ' est valide'  
+    small.classList.remove('label-invalide')
+    small.classList.add('label-valide')  
+    return true;
+    }
+}
+
+
+
+
+inputFirst = document.getElementById('first');
+inputLast = document.getElementById('last');
+
+
+inputFirst.addEventListener('change', function (){
+  validUser (inputFirst, 'prenom')
+});
+
+
+inputLast.addEventListener('change', function(){
+  validUser (inputLast, 'nom')
+});
+
+
+
+
+
+
 
  // validation de l'email
 const validEmail = function(inputEmail) {
@@ -91,60 +153,17 @@ const validEmail = function(inputEmail) {
       small.classList.remove('label-invalide')
       small.classList.add('label-valide')
       return true;
-    } else {
+    }  
       small.innerHTML = 'adresse non valide'
       small.classList.remove('label-valide')
       small.classList.add('label-invalide')
       return false;
-    }
+    
 
 }
-let nom = 'nom'
 
-// validation du prénom et du nom
- 
 
-     function pseudo() {
-  
-      let small = this.nextElementSibling;
-  
-      if (!/[a-zA-Z]{3,15}/.test(this.value)) {
-        small.innerHTML = 'le ' + (nom) + ' doit contenir plus de 2 caractères'
-        small.classList.remove('label-valide')
-        small.classList.add('label-invalide')
-        return false;
-      } else if 
-        (/[0-9]/.test(this.value)) {
-        small.innerHTML = 'le ' + (nom) + ' ne doit pas contenir de chiffre'
-        small.classList.remove('label-valide')
-        small.classList.add('label-invalide')
-        return false;
-        } 
-        
-        else if 
-        (/[a-zA-Z]{3,15}/.test(this.value)) {
-        small.innerHTML = 'le ' + (nom) + ' est valide'  
-        small.classList.remove('label-invalide')
-        small.classList.add('label-valide')  
-        return true;
-        }
-        
-        
-      }  
-      
-       
-      
-       
-      
-      document.querySelector('#first').addEventListener('change', pseudo); 
-        
-      
-      document.querySelector('#last').addEventListener('change', pseudo);
 
-      
-      
-      
-      
      
         
         
@@ -168,15 +187,14 @@ let nom = 'nom'
       
       const ValidCheckbox = function(labelCheckbox) {
         
-        let small = labelCheckbox.nextElementSibling.nextElementSibling;
+        let small = document.getElementById('checkbox-text2');
         if (!labelCheckbox.checked){
-          small.innerHTML = ('il faut valider la case')
+          small.innerHTML = ('Vous devez vérifier que vous acceptez les termes et conditions.')
           small.classList.remove('label-valide')
           small.classList.add('label-invalide')
           return false ;
         } 
-        else (labelCheckbox.checked)
-          small.innerHTML = ('case valide ')
+          small.innerHTML = ('conditions accepté ')
           small.classList.add('label-valide')
           small.classList.remove('label-invalide')
           return true ;
@@ -243,13 +261,34 @@ let nom = 'nom'
       small.classList.remove('label-invalide')
       small.classList.add('label-valide')
       return true;
-    } else {
-      small.innerHTML = 'la date doit etre au format jj/mm/aaaa '
+    }  
+      small.innerHTML = 'la date doit etre au format jj/mm/aaaa'
       small.classList.remove('label-valide')
       small.classList.add('label-invalide')
       return false;
-    }
+    
 
+}
+
+// validation de radio 
+
+inputLocation = document.querySelectorAll('.checkbox-valid')
+
+ function validLocation(){
+  
+  let small = document.getElementById('checkbox-text');
+  for (var i = 0 ; i < inputLocation.length; i++)
+  if (inputLocation[i].checked) {
+    small.innerHTML = 'localisation validé'
+    small.classList.remove('label-invalide')
+    small.classList.add('label-valide')
+    return true 
+  }  
+    small.innerHTML = 'veuillez selectionner une localisation'
+    small.classList.remove('label-valide')
+    small.classList.add('label-invalide')
+    return false 
+  
 }
 
 
