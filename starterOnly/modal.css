@@ -195,6 +195,12 @@ label {
   display: inline-block;
   margin-bottom: 11px;
 }
+.label-valide{
+  color: green;
+}
+.label-invalide{
+  color: red;
+}
 input {
   padding: 8px;
   border: 0.8px solid #ccc;
