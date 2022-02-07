@@ -164,20 +164,6 @@ const validEmail = function(inputEmail) {
 
 
 
-     
-        
-        
-
-
-
-
-
-
-
-
-
-
-
 
       // validation des conditions générales 
       
